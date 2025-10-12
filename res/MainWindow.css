@@ -1,0 +1,14 @@
+
+/*#mainWindow {
+  width: 640px;
+  height: 480px;
+}*/
+
+#toolbarWidget {
+  min-height: 50px;
+  max-height: 50px;
+  background-color: red;
+}
+
+#softwareTreeWidget {
+}
