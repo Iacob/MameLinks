@@ -29,13 +29,19 @@ MLNKDirListSelectorDialog::MLNKDirListSelectorDialog(MLNKDirListSelectorMode mod
     saveDirBlock->setLayout(new QHBoxLayout(saveDirBlock));
     static_cast<QVBoxLayout*>(this->layout())->addWidget(saveDirBlock, 0, Qt::AlignTop);
 
-    static_cast<QHBoxLayout*>(saveDirBlock->layout())->addWidget(new QLabel("保存目录", saveDirBlock), 0, Qt::AlignLeft);
+    QLabel *savePathFieldNameLabel = new QLabel("保存目录", saveDirBlock);
+    static_cast<QHBoxLayout*>(saveDirBlock->layout())->addWidget(savePathFieldNameLabel, 0, Qt::AlignLeft);
 
-    savePathLabel = new QLabel("/home", saveDirBlock);
+    savePathLabel = new QLabel("", saveDirBlock);
     static_cast<QHBoxLayout*>(saveDirBlock->layout())->addWidget(savePathLabel, INT_MAX, Qt::AlignHCenter);
 
     selectSavePathButton = new QPushButton("选择目录", saveDirBlock);
     static_cast<QHBoxLayout*>(saveDirBlock->layout())->addWidget(selectSavePathButton, 0, Qt::AlignRight);
+
+    if (mode != MLNKDirSelectorModeSnapshot) {
+        savePathFieldNameLabel->setVisible(false);
+        selectSavePathButton->setVisible(false);
+    }
 
     dirTableWidget = new QTableWidget(this);
     dirTableWidget->setColumnCount(1);
