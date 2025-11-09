@@ -2,8 +2,10 @@
 #include <iostream>
 
 //#include <mainwindow.h>
-#include "mainwindowfactory.h"
+//#include "mainwindowfactory.h"
 #include "softwarelist.h"
+
+#include "mlnk_mainwindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -30,10 +32,15 @@ int main(int argc, char *argv[])
     SoftwareList::readSoftwareList(softwareInfos, &softwareCount);
     std::cout << "软件列表加载完毕" << std::endl;
 
-    MainWindowFactory mainWindowFactory;
-    mainWindowFactory.softwareInfos = softwareInfos;
-    mainWindowFactory.softwareCount = softwareCount;
-    mainWindowFactory.displayMainWindow();
+    // MainWindowFactory mainWindowFactory;
+    // mainWindowFactory.softwareInfos = softwareInfos;
+    // mainWindowFactory.softwareCount = softwareCount;
+    // mainWindowFactory.displayMainWindow();
+
+    MLNKMainWindow *mainWindow = new MLNKMainWindow();
+    mainWindow->softwareInfos = softwareInfos;
+    mainWindow->softwareCount = softwareCount;
+    mainWindow->showSoftwareList();
 
     return a.exec();
 }

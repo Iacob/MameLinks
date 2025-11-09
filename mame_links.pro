@@ -10,6 +10,10 @@ CONFIG += c++17 cmdline
 SOURCES += \
         main.cpp \
         mainwindowfactory.cpp \
+        mlnk_configstore.cpp \
+        mlnk_dirlistselectordialog.cpp \
+        mlnk_listpathdialog.cpp \
+        mlnk_mainwindow.cpp \
         picturewidget.cpp \
         softdetailwidget.cpp \
         softwarefilelocator.cpp \
@@ -23,6 +27,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     MameLinksGlobal.h \
     mainwindowfactory.h \
+    mlnk_configstore.h \
+    mlnk_dirlistselectordialog.h \
+    mlnk_listpathdialog.h \
+    mlnk_mainwindow.h \
     picturewidget.h \
     softdetailwidget.h \
     softwarefilelocator.h \

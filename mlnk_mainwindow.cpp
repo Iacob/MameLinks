@@ -1,45 +1,34 @@
-#include "mainwindowfactory.h"
-#include "softdetailwidget.h"
-//#include "softwarefilelocator.h"
+#include "mlnk_mainwindow.h"
 
 #include <iostream>
-
-#include <QObject>
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QSplitter>
-#include <QFrame>
-#include <QTreeWidget>
-#include <QTabWidget>
 #include <QFile>
-#include <QString>
-#include <QStringList>
-#include <QTreeWidgetItem>
+#include <QVBoxLayout>
+#include <QFrame>
 #include <QPushButton>
+#include <QSplitter>
+#include <QTreeWidget>
 
+#include "softdetailwidget.h"
 #include "mlnk_listpathdialog.h"
 
-MainWindowFactory::MainWindowFactory() {}
-
-void MainWindowFactory::displayMainWindow() {
-
+MLNKMainWindow::MLNKMainWindow(QWidget *parent)
+    : QWidget{parent}
+{
     // 载入css
     QFile *qssFile = new QFile(":/res/MainWindow.css");
     qssFile->open(QFile::ReadOnly);
     //QString *qssStr = new QString(qssFile->readAll());
     QString qssStr = QString::fromUtf8(qssFile->readAll());
     qssFile->close();
+    //
+    this->setObjectName("mainWindow");
+    this->setStyleSheet(qssStr);
 
-    QWidget *mainWindow = new QWidget();
-    mainWindow->setObjectName("mainWindow");
-    mainWindow->setStyleSheet(qssStr);
-
-    QVBoxLayout *mainLayout = new QVBoxLayout(mainWindow);
-    mainWindow->setLayout(mainLayout);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    this->setLayout(mainLayout);
 
     // 工具栏
-    QFrame *toolbarWidget = new QFrame(mainWindow);
+    QFrame *toolbarWidget = new QFrame(this);
     toolbarWidget->setMinimumHeight(50);
     //toolbarWidget->setStyleSheet("background-color: yellow");
     toolbarWidget->setLayout(new QHBoxLayout(toolbarWidget));
@@ -52,12 +41,12 @@ void MainWindowFactory::displayMainWindow() {
     static_cast<QHBoxLayout*>(toolbarWidget->layout())->addStretch(INT_MAX);
 
     // 主要内容窗口
-    QSplitter *mainContentSplitterPane = new QSplitter(mainWindow);
+    QSplitter *mainContentSplitterPane = new QSplitter(this);
     mainContentSplitterPane->setOrientation(Qt::Horizontal);
     mainLayout->addWidget(mainContentSplitterPane, INT_MAX);
 
     // 软件树形列表组件
-    QTreeWidget *softwareTreeWidget = new QTreeWidget(mainWindow);
+    softwareTreeWidget = new QTreeWidget(this);
     softwareTreeWidget->setObjectName("softwareTreeWidget");
     mainContentSplitterPane->addWidget(softwareTreeWidget);
 
@@ -72,22 +61,22 @@ void MainWindowFactory::displayMainWindow() {
     softwareTreeWidget->setSortingEnabled(true);
     softwareTreeWidget->sortItems(0, Qt::AscendingOrder);
 
-    std::cout << "正在列出软件列表" << std::endl;
-    //
-    for (int i=0; i<this->softwareCount; i++) {
-        QTreeWidgetItem *item = new QTreeWidgetItem(softwareTreeWidget);
-        SoftwareInfo softwareInfo = this->softwareInfos[i];
-        item->setText(0, softwareInfo.description);
-        item->setText(1, softwareInfo.name);
-        item->setText(2, softwareInfo.year);
-        item->setText(3, softwareInfo.manufacturer);
-        softwareTreeWidget->addTopLevelItem(item);
-        // QString name;
-        // QString description;
-        // QString year;
-        // QString manufacturer;
-    }
-    std::cout << "软件列表已列出" << std::endl;
+    // std::cout << "正在列出软件列表" << std::endl;
+    // //
+    // for (int i=0; i<this->softwareCount; i++) {
+    //     QTreeWidgetItem *item = new QTreeWidgetItem(softwareTreeWidget);
+    //     SoftwareInfo softwareInfo = this->softwareInfos[i];
+    //     item->setText(0, softwareInfo.description);
+    //     item->setText(1, softwareInfo.name);
+    //     item->setText(2, softwareInfo.year);
+    //     item->setText(3, softwareInfo.manufacturer);
+    //     softwareTreeWidget->addTopLevelItem(item);
+    //     // QString name;
+    //     // QString description;
+    //     // QString year;
+    //     // QString manufacturer;
+    // }
+    // std::cout << "软件列表已列出" << std::endl;
 
     softwareTreeWidget->setColumnWidth(0, 500);
 
@@ -118,7 +107,7 @@ void MainWindowFactory::displayMainWindow() {
     // QObject::connect(softwareTreeWidget, &QTreeWidget::itemActivated, [=](QTreeWidgetItem *item, int column) {
     //     std::cout << column << " " << qPrintable(item->text(1)) << std::endl;
     // });
-    QObject::connect(softwareTreeWidget, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem *current, QTreeWidgetItem *previous) {
+    connect(softwareTreeWidget, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem *current, QTreeWidgetItem *previous) {
         if (previous != NULL) {
             std::cout << "previous:" << qPrintable(previous->text(1)) << std::endl;
         }
@@ -128,7 +117,7 @@ void MainWindowFactory::displayMainWindow() {
         }
     });
 
-    QObject::connect(configPathButton, &QPushButton::clicked, [=]() {
+    connect(configPathButton, &QPushButton::clicked, [=]() {
         MLNKListPathDialog *listPathDialog = new MLNKListPathDialog();
         listPathDialog->show();
     });
@@ -137,6 +126,20 @@ void MainWindowFactory::displayMainWindow() {
     mainContentSplitterPane->setStretchFactor(0, 0);
     mainContentSplitterPane->setStretchFactor(1, 1);
     mainContentSplitterPane->setOpaqueResize(true);
+}
 
-    mainWindow->show();
+void MLNKMainWindow::showSoftwareList() {
+    std::cout << "正在列出软件列表" << std::endl;
+    //
+    for (int i=0; i<this->softwareCount; i++) {
+        QTreeWidgetItem *item = new QTreeWidgetItem(softwareTreeWidget);
+        SoftwareInfo softwareInfo = this->softwareInfos[i];
+        item->setText(0, softwareInfo.description);
+        item->setText(1, softwareInfo.name);
+        item->setText(2, softwareInfo.year);
+        item->setText(3, softwareInfo.manufacturer);
+        softwareTreeWidget->addTopLevelItem(item);
+    }
+    std::cout << "软件列表已列出" << std::endl;
+    this->show();
 }
