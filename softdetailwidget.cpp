@@ -37,23 +37,31 @@ SoftDetailWidget::SoftDetailWidget(QWidget* parent, int defaultTab): QWidget(par
 
     const QAtomicPointer<QPlainTextEdit> atomicTextEditor(textArea);
 
-    QObject::connect(tabBar, &QTabBar::currentChanged, [=](int idx) {
-        std::cout << "selected tab index: " << idx << std::endl;
-        this->setContentStatusByCurrentTab();
-        // if (idx == 0) {
-        //     QPlainTextEdit* textEditor = atomicTextEditor.loadAcquire();
-        //     textEditor->setHidden(true);
-        // } else if (idx == 1) {
-        //     QPlainTextEdit* textEditor = atomicTextEditor.loadAcquire();
-        //     textEditor->setHidden(false);
-        // }
-    });
+    // QObject::connect(tabBar, &QTabBar::currentChanged, [=](int idx) {
+    //     std::cout << "selected tab index: " << idx << std::endl;
+    //     this->setContentStatusByCurrentTab();
+    //     // if (idx == 0) {
+    //     //     QPlainTextEdit* textEditor = atomicTextEditor.loadAcquire();
+    //     //     textEditor->setHidden(true);
+    //     // } else if (idx == 1) {
+    //     //     QPlainTextEdit* textEditor = atomicTextEditor.loadAcquire();
+    //     //     textEditor->setHidden(false);
+    //     // }
+    // });
+
+    QObject::connect(tabBar, &QTabBar::currentChanged, this, &SoftDetailWidget::handlerTabChange);
+}
+
+void SoftDetailWidget::handlerTabChange(int tabIdx) {
+    this->setContentStatusByCurrentTab();
 }
 
 void SoftDetailWidget::showDetailForSoftware(QString name) {
     QString snapshot = SoftwareFileLocator::findSnapshotPath(SoftwareFileLocator::FileTypeSnapShot, name);
     this->picturePath = snapshot;
-    this->update();
+    if (tabBar->currentIndex() == 0) {
+        this->update();
+    }
 }
 
 void SoftDetailWidget::setContentStatusByCurrentTab() {
@@ -62,12 +70,13 @@ void SoftDetailWidget::setContentStatusByCurrentTab() {
     } else {
         this->textArea->setHidden(true);
     }
+    this->update();
 }
 
 void SoftDetailWidget::paintEvent(QPaintEvent *event) {
     //std::cout << "paint event width:" << event->rect().width() << " widget width:" << this->width() << std::endl;
     QPainter painter(this);
-    if (!this->picturePath.isEmpty()) {
+    if ((!this->picturePath.isEmpty()) && (this->tabBar->currentIndex() == 0)) {
         int topSpace = 45;
         int scaledHeight = event->rect().height() - topSpace;
         QPixmap pixmap(this->picturePath);

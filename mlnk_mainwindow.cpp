@@ -114,6 +114,7 @@ MLNKMainWindow::MLNKMainWindow(QWidget *parent)
         if (current != nullptr) {
             std::cout << "current:" << qPrintable(current->text(1)) << std::endl;
             softwareDetailWidget1->showDetailForSoftware(current->text(1));
+            softwareDetailWidget2->showDetailForSoftware(current->text(1));
         }
     });
 

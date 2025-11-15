@@ -10,7 +10,6 @@ class SoftDetailWidget: public QWidget
 {
 public:
     SoftDetailWidget(QWidget* parentwidget = nullptr, int defaultTab = 0);
-    void showDetailForSoftware(QString name);
 protected:
     void setContentStatusByCurrentTab();
     void paintEvent(QPaintEvent *event);
@@ -19,6 +18,9 @@ private:
     QPlainTextEdit *textArea;
     QString picturePath;
     QString software;
+public slots:
+    void handlerTabChange(int tabIdx);
+    void showDetailForSoftware(QString name);
 };
 
 #endif // SOFTDETAILWIDGET_H
