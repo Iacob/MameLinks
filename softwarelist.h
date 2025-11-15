@@ -15,6 +15,7 @@ class SoftwareList
 public:
     SoftwareList();
     static void readSoftwareList(SoftwareInfo* softwareInfos, int* softwareCount);
+    static QString unescapeText(QString text);
 };
 
 #endif // SOFTWARELIST_H

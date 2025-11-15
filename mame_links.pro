@@ -12,6 +12,7 @@ SOURCES += \
         mainwindowfactory.cpp \
         mlnk_configstore.cpp \
         mlnk_dirlistselectordialog.cpp \
+        mlnk_infolineparser.cpp \
         mlnk_listpathdialog.cpp \
         mlnk_mainwindow.cpp \
         picturewidget.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     mainwindowfactory.h \
     mlnk_configstore.h \
     mlnk_dirlistselectordialog.h \
+    mlnk_infolineparser.h \
     mlnk_listpathdialog.h \
     mlnk_mainwindow.h \
     picturewidget.h \
@@ -40,5 +42,4 @@ RESOURCES += \
   application.qrc
 
 DISTFILES += \
-  res/MainWindow.css \
-  res/mame0280.xml
+  res/MainWindow.css

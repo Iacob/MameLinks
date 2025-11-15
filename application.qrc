@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>res/MainWindow.css</file>
-        <file>res/mame0280.xml</file>
+        <file>res/mame0280.txt</file>
     </qresource>
 </RCC>
