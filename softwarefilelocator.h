@@ -16,7 +16,7 @@ public:
         FileTypeFlyer
     };
     SoftwareFileLocator();
-    static QString findSnapshotPath(FileType fileType, QString software);
+    static QString findSnapshotFilePath(FileType fileType, QString software);
 };
 
 #endif // SOFTWAREFILELOCATOR_H

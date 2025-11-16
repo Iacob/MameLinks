@@ -57,7 +57,7 @@ void SoftDetailWidget::handlerTabChange(int tabIdx) {
 }
 
 void SoftDetailWidget::showDetailForSoftware(QString name) {
-    QString snapshot = SoftwareFileLocator::findSnapshotPath(SoftwareFileLocator::FileTypeSnapShot, name);
+    QString snapshot = SoftwareFileLocator::findSnapshotFilePath(SoftwareFileLocator::FileTypeSnapShot, name);
     this->picturePath = snapshot;
     if (tabBar->currentIndex() == 0) {
         this->update();
